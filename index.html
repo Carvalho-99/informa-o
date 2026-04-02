@@ -138,9 +138,9 @@
 
         .escala-container {
             overflow-x: auto;
-            background: #fff;
-            padding: 15px;
-            border-radius: 8px;
+            background: #2e3d44;
+            padding: 6px;
+            border-radius: 10px;
             margin-top: 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
@@ -148,34 +148,55 @@
         table {
             border-collapse: collapse;
             width: 100%;
-            min-width: 1200px;
-            background: #fff;
+            min-width: 900px;
             color: #000;
             font-weight: bold;
-            font-size: 0.75rem;
-            border: 2px solid #000;
+            font-size: 0.78rem;
         }
 
-        th, td { border: 1px solid #000; padding: 8px 2px; text-align: center; color: #000; }
+        th, td { border: 2px solid #2e3d44; padding: 9px 3px; text-align: center; color: #000; }
 
         .sticky-col {
             position: sticky;
             left: 0;
-            background: #f0f0f0;
+            background: #d6dde0;
             z-index: 5;
-            min-width: 130px;
+            min-width: 90px;
             text-align: left;
             padding-left: 10px;
-            border-right: 2px solid #000;
+            border-right: 3px solid #2e3d44;
+            color: #222;
+            white-space: nowrap;
         }
 
-        .header-row { background: #d9e1f2; }
-        .folga-label { background: #ffebcc; }
+        .header-row th, .header-row td { background: #c8d4da; color: #333; font-size: 0.72rem; }
+        .header-row .sticky-col { background: #b8c8d0; color: #1a3a1a; font-weight: 800; }
+        .folga-label { background: #e8e0cc !important; color: #555 !important; }
         .a { background: #ff9900; }
-        .b { background: #ffcc00; }
+        .b { background: #ffcc00; color: #222; }
         .c { background: #3399ff; }
         .d { background: #339933; }
-        .e { background: #ccff33; }
+        .e { background: #99cc00; color: #222; }
+
+        .legenda {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .legenda-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--dim);
+        }
+        .legenda-cor {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
 
         footer {
             background: #0d1417;
@@ -258,6 +279,16 @@
             margin-bottom: 10px;
             display: none;
         }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .header-content { flex-wrap: wrap; gap: 10px; }
+            nav { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; }
+            nav a, #btn-admin { margin-left: 0; font-size: 0.75rem; }
+            .sticky-col { min-width: 70px; font-size: 0.62rem; padding-left: 4px; }
+            table { font-size: 0.62rem; min-width: 600px; }
+            th, td { padding: 7px 2px; }
+        }
     </style>
 </head>
 <body>
@@ -268,10 +299,13 @@
         <nav>
             <a href="#primeiro-acesso">Acessos</a>
             <a href="#ti-avisos">TI Avisos</a>
-            <a href="#rh">RH/DP</a>
-            <a href="#escala">Escala</a>
             <a href="#comunicados">Comunicados</a>
+            <a href="#rh">RH/Ponto</a>
+            <a href="#escala">Escala Revita</a>
+            <a href="#escala-forest">Turnos Forest</a>
+            <a href="#manual-detalhado">Manual</a>
             <a href="#plano-saude">Plano de Saúde</a>
+            <a href="#beneficios">Benefícios</a>
             <button id="btn-admin" onclick="abrirModal()">⚙ Alterar Escala</button>
         </nav>
     </div>
@@ -310,7 +344,7 @@
     <section id="primeiro-acesso">
         <h3>Primeiro Acesso</h3>
         <div class="grid-cards">
-            <div class="card"><h4>E-mail</h4><p>nome.sobrenome@forest.ind.br</p></div>
+            <div class="card"><h4>E-mail</h4><p><a ></a>nome.sobrenome@forest.ind.br</a></p></div>
             <div class="card"><h4>Notebook</h4><p>Senha inicial: <strong>Forest@2026</strong>.</p></div>
             <div class="card"><h4>Protheus</h4><p>Usuário: nome.sobrenome | Senha: 123456</p></div>
             <a href="https://interface-client.milvus.com.br/listagem?token=e9d416d91074f7d7c084c09070334f2d58294273cd70415ba5ec5db3bb9f394452f68ea3a1db97e12053163b53856dc5efef24920e9195f20806913912f7a9752969847e42"
@@ -326,6 +360,27 @@
             <span class="tag">TI - Cuidado Diário</span>
             <p>Temos identificado danos físicos em notebooks (portas quebradas, teclas arrancadas e avarias na estrutura).</p>
             <p style="margin-top: 10px; color: var(--dim);">Reforçamos a importância do cuidado no manuseio e transporte. Em caso de anormalidade, <strong>acione a TI imediatamente</strong>. Não tente reparar por conta própria.</p>
+        </div>
+    </section>
+
+    <section id="comunicados">
+        <h3>Comunicados & Eventos</h3>
+        <div class="grid-cards">
+            <div class="card">
+                <span class="tag">Eleições CIPA</span>
+                <h4>Resultados da Votação</h4>
+                <p style="font-size: 0.85rem;">1º Fernando Betim<br>2º Angela Teixeira<br>3º Luiz Antonio Evangelista</p>
+            </div>
+            <div class="card">
+                <span class="tag">03/04 - Sexta Santa</span>
+                <h4>Folga Geral</h4>
+                <p>Feriado para Produção e Administrativo.</p>
+            </div>
+            <div class="card">
+                <span class="tag">Monitoramento</span>
+                <h4>Acesso às Câmeras</h4>
+                <p>Líderes devem informar à TI os colaboradores que necessitam de acesso e a justificativa até 02/04/2026.</p>
+            </div>
         </div>
     </section>
 
@@ -351,10 +406,20 @@
                 <li>Entrega fora do prazo pode gerar falta não justificada e impacto no pagamento.</li>
             </ul>
         </div>
+        <div class="info-box">
+            <span class="tag">App Meu RH</span>
+            <h4>Consulta de Ponto e Holerite</h4>
+            <p>Pelo aplicativo <strong>Meu RH</strong> você consulta seu espelho de ponto e holerite a qualquer hora.</p>
+            <ul style="margin: 12px 0 0 20px; font-size: 0.9rem; color: var(--dim);">
+                <li>Instale o aplicativo <strong>Meu RH</strong> na sua loja de aplicativos.</li>
+                <li>No primeiro acesso, escaneie o <strong>QR Code</strong> disponível no RH.</li>
+                <li>Login: <strong>seu CPF sem pontuação</strong> | Senha inicial: <strong>111111</strong></li>
+            </ul>
+        </div>
     </section>
 
     <section id="escala">
-        <h3>Escala de Turnos - Abril 2026</h3>
+        <h3>Escala de Turnos Revita — Abril 2026</h3>
         <div class="escala-container">
             <table>
                 <thead>
@@ -405,26 +470,30 @@
                 </tbody>
             </table>
         </div>
-        <p style="margin-top: 10px; font-size: 0.7rem; color: var(--dim);">* Arraste para o lado para ver o mês completo.</p>
+        <div class="legenda">
+            <div class="legenda-item"><div class="legenda-cor" style="background:#e07800"></div>Turma A</div>
+            <div class="legenda-item"><div class="legenda-cor" style="background:#c9a800"></div>Turma B</div>
+            <div class="legenda-item"><div class="legenda-cor" style="background:#1a7fcc"></div>Turma C</div>
+            <div class="legenda-item"><div class="legenda-cor" style="background:#217a30"></div>Turma D</div>
+            <div class="legenda-item"><div class="legenda-cor" style="background:#7ab800"></div>Turma E</div>
+            <div class="legenda-item"><div class="legenda-cor" style="background:#3a3020; border:1px solid #666"></div>Folga</div>
+        </div>
     </section>
 
-    <section id="comunicados">
-        <h3>Comunicados & Eventos</h3>
+    <section id="escala-forest">
+        <h3>Turnos Forest Paper</h3>
         <div class="grid-cards">
             <div class="card">
-                <span class="tag">Eleições CIPA</span>
-                <h4>Resultados da Votação</h4>
-                <p style="font-size: 0.85rem;">1º Fernando Betim<br>2º Angela Teixeira<br>3º Luiz Antonio Evangelista</p>
+                <h4>1º Turno</h4>
+                <p>00:10 – 03:00 / 04:00 – 08:00</p>
             </div>
             <div class="card">
-                <span class="tag">03/04 - Sexta Santa</span>
-                <h4>Folga Geral</h4>
-                <p>Feriado para Produção e Administrativo.</p>
+                <h4>2º Turno</h4>
+                <p>08:00 – 12:00 / 13:00 – 16:20</p>
             </div>
             <div class="card">
-                <span class="tag">Monitoramento</span>
-                <h4>Acesso às Câmeras</h4>
-                <p>Líderes devem informar à TI os colaboradores que necessitam de acesso e a justificativa até 02/04/2026.</p>
+                <h4>3º Turno</h4>
+                <p>16:10 – 20:00 / 21:00 – 00:30</p>
             </div>
         </div>
     </section>
@@ -440,7 +509,7 @@
             <h4>2. Configuração de Credenciais</h4>
             <p>Você receberá um envelope ou e-mail com suas credenciais provisórias. Por segurança, o sistema solicitará a alteração da senha no primeiro login. Utilize o padrão <strong>Forest@2026</strong> apenas para o primeiro acesso ao Windows.</p>
             <h4>3. Acessos aos Sistemas (ERP e E-mail)</h4>
-            <p>Seu e-mail segue o padrão <em>nome.sobrenome@forest.ind.br</em>. O acesso ao Protheus será liberado conforme seu cargo. Caso sinta falta de algum módulo, peça ao seu gestor para abrir um chamado de permissão.</p>
+            <p>Seu e-mail segue o padrão <strong>nome.sobrenome@forest.ind.br</strong>  O acesso ao Protheus será liberado conforme seu cargo. Caso sinta falta de algum módulo, peça ao seu gestor para abrir um chamado de permissão.</p>
             <h4>4. Conexão à Rede Wi-Fi</h4>
             <p>O acesso Wi-Fi é individual por segurança. Solicite um <strong>voucher</strong> através do sistema de chamados Milvus assim que seu computador estiver logado.</p>
             <p style="margin-top: 20px; font-style: italic; border-top: 1px solid var(--slate); padding-top: 10px;">
@@ -472,18 +541,57 @@
         </div>
     </section>
 
+    <section id="beneficios">
+        <h3>Benefícios</h3>
+
+        <div class="info-box">
+            <span class="tag">Vale Alimentação — Flash</span>
+            <h4>Aplicativo Flash</h4>
+            <ul style="margin: 10px 0 0 20px; font-size: 0.9rem; color: var(--dim);">
+                <li>Instale o aplicativo <strong>Flash</strong> na sua loja de aplicativos.</li>
+                <li>Verifique no seu <strong>e-mail ou SMS</strong> o link para realizar o primeiro acesso.</li>
+                <li>Insira seus dados conforme solicitado.</li>
+                <li>Desbloqueie o cartão usando o <strong>QR Code no verso</strong> do cartão recebido ou inserindo a numeração.</li>
+            </ul>
+            <p style="margin-top: 12px; font-size: 0.82rem; color: #e74c3c;">* Caso não tenha recebido o link de primeiro acesso, comunique o RH.</p>
+        </div>
+
+        <div class="info-box">
+            <span class="tag">Vale-Transporte</span>
+            <h4>Cartão Vinsa</h4>
+            <p>O vale-transporte é depositado mensalmente no <strong>cartão Vinsa</strong>, identificado pelo seu CPF.</p>
+            <ul style="margin: 12px 0 0 20px; font-size: 0.9rem; color: var(--dim);">
+                <li>Caso ainda não possua o cartão, compareça à <strong>Vinsa</strong> para solicitar a emissão.</li>
+                <li>Há desconto de <strong>6%</strong> do valor em folha de pagamento.</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <span class="tag">Convênio Farmácia</span>
+            <h4>Farmácia Farmalis</h4>
+            <p>Compras na Farmácia Farmalis funcionam por convênio — você assina um <strong>termo de autorização</strong> e compra sem pagar na hora.</p>
+            <ul style="margin: 12px 0 0 20px; font-size: 0.9rem; color: var(--dim);">
+                <li>Limite de uso: até <strong>15% do seu salário</strong>.</li>
+                <li>O valor gasto é descontado diretamente na folha de pagamento.</li>
+                <li>Se não houver compras no mês, <strong>não há desconto</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <span class="tag">GymPass</span>
+            <h4>Atividade Física</h4>
+            <p>Colaboradores interessados no <strong>GymPass</strong> devem solicitar a ativação diretamente no RH.</p>
+        </div>
+    </section>
+
 </main>
 
 <footer>
     <p>Diretoria de Tecnologia da Informação &copy; 2026 Forest Paper</p>
 </footer>
 
-<script>
-    // Credenciais de acesso ao editor (altere aqui se necessário)
-    const USUARIOS = {
-        'rh': 'rh@2026',
-        'ti': 'ti@2026'
-    };
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    const USUARIOS = { 'rh': 'rh@2026', 'ti': 'ti@2026' };
 
     function abrirModal() {
         document.getElementById('modal-login').classList.add('ativo');
@@ -501,7 +609,6 @@
         const user = document.getElementById('inp-user').value.trim().toLowerCase();
         const senha = document.getElementById('inp-senha').value;
         const erro = document.getElementById('erro-login');
-
         if (USUARIOS[user] && USUARIOS[user] === senha) {
             fecharModal();
             window.location.href = 'admin-escala.html';
@@ -511,21 +618,21 @@
         }
     }
 
-    // Fechar modal clicando fora
     document.getElementById('modal-login').addEventListener('click', function(e) {
         if (e.target === this) fecharModal();
     });
 
-    // Scroll suave com offset do header
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const targetId = this.getAttribute('href');
-            if (targetId !== "#") {
+            if (targetId !== '#') {
                 e.preventDefault();
                 const target = document.querySelector(targetId);
-                const offset = 80;
-                const top = target.getBoundingClientRect().top + window.scrollY - offset;
-                window.scrollTo({ top, behavior: 'smooth' });
+                if (target) {
+                    const offset = 80;
+                    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                }
             }
         });
     });
