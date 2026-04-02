@@ -300,10 +300,41 @@
         <div id="msg-pub" class="msg"></div>
     </div>
 
+    <p class="section-title" style="margin-top:40px;">Editar Comunicados & Feriados</p>
+    <div class="info-box" style="margin-bottom:16px;">
+        <p style="font-size:0.82rem; color:var(--dim);">Edite o título e descrição do card de feriado e os resultados da CIPA. Clique em <strong>Publicar</strong> para atualizar o site.</p>
+    </div>
+
+    <div class="form-grid">
+        <div>
+            <label>Título do Feriado</label>
+            <input type="text" id="feriado-titulo-inp" placeholder="Ex: Sexta-Feira Santa — 18/04" value="Sexta-Feira Santa — 18/04">
+        </div>
+        <div>
+            <label>Descrição do Feriado</label>
+            <input type="text" id="feriado-desc-inp" placeholder="Ex: Folga geral para Produção e Administrativo." value="Folga geral para Produção e Administrativo.">
+        </div>
+    </div>
+
+    <label style="margin-top:14px;">Eleitos CIPA — Forest (um por linha: 1º Nome)</label>
+    <textarea id="cipa-forest" rows="5" placeholder="1º Jose Carlos Karas Nagy&#10;2º Marcos Bueno&#10;3º Uanderson Resende&#10;4º Sergio Ap. Americo&#10;5º Altimir dos Santos">1º Jose Carlos Karas Nagy
+2º Marcos Bueno
+3º Uanderson Resende
+4º Sergio Ap. Americo
+5º Altimir dos Santos</textarea>
+
+    <label style="margin-top:14px;">Eleitos CIPA — Revita (um por linha: 1º Nome)</label>
+    <textarea id="cipa-revita" rows="5" placeholder="1º Nome&#10;2º Nome&#10;...">Em breve.</textarea>
+
+    <div class="acoes" style="margin-top:14px;">
+        <button class="btn btn-publicar" id="btn-pub-com" onclick="publicarComunicados()">🚀 Publicar Comunicados</button>
+    </div>
+    <div id="msg-pub-com" class="msg"></div>
+
 </div>
 <script>
     // ── Configuração GitHub ──────────────────────────────
-    const GH_TOKEN  = "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";  // Cole o novo token aqui
+    const GH_TOKEN  = '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';
     const GH_OWNER  = 'Carvalho-99';
     const GH_REPO   = 'informa-o';
     const GH_FILE   = 'index.html';
@@ -449,6 +480,76 @@
             btn.innerHTML = '🚀 Publicar no Site';
         }
     }
+
+    async function publicarComunicados() {
+        const btn = document.getElementById('btn-pub-com');
+        const msg = document.getElementById('msg-pub-com');
+
+        const feriadoTitulo = document.getElementById('feriado-titulo-inp').value.trim();
+        const feriadoDesc   = document.getElementById('feriado-desc-inp').value.trim();
+        const cipaForest    = document.getElementById('cipa-forest').value.trim();
+        const cipaRevita    = document.getElementById('cipa-revita').value.trim();
+
+        if (!feriadoTitulo) { msg.textContent = 'Preencha o título do feriado.'; msg.className = 'msg erro'; return; }
+
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span>Buscando arquivo...';
+        msg.textContent = 'Conectando ao GitHub...'; msg.className = 'msg info';
+
+        const headers = {
+            'Authorization': `token ${GH_TOKEN}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+        };
+        const apiURL = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}?ref=${GH_BRANCH}`;
+
+        try {
+            const res = await fetch(apiURL, { headers });
+            if (!res.ok) throw new Error(`Erro ao buscar: ${res.status}`);
+            const fileData = await res.json();
+            const sha = fileData.sha;
+            let html = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
+
+            // Atualizar feriado
+            html = html.replace(/<h4 id="feriado-titulo">.*?<\/h4>/, `<h4 id="feriado-titulo">${feriadoTitulo}</h4>`);
+            html = html.replace(/<p id="feriado-desc">.*?<\/p>/, `<p id="feriado-desc">${feriadoDesc}</p>`);
+
+            // Atualizar CIPA Forest
+            const linhasF = cipaForest.split('\n').filter(l => l.trim()).map(l => l.trim()).join('<br>\n                    ');
+            html = html.replace(
+                /(<span class="tag">Eleições CIPA — Forest<\/span>[\s\S]*?<p style="font-size: 0.85rem;">)[\s\S]*?(<\/p>\s*<\/div>\s*<div class="card">\s*<span class="tag">Eleições CIPA — Revita)/,
+                `$1\n                    ${linhasF}\n                </p>\n            </div>\n            <div class="card">\n                <span class="tag">Eleições CIPA — Revita`
+            );
+
+            // Atualizar CIPA Revita
+            const linhasR = cipaRevita.split('\n').filter(l => l.trim()).map(l => l.trim()).join('<br>\n                    ');
+            html = html.replace(
+                /(<span class="tag">Eleições CIPA — Revita<\/span>[\s\S]*?<p style="font-size: 0.85rem; color: var\(--dim\);">)[\s\S]*?(<\/p>)/,
+                `$1\n                    ${linhasR}\n                $2`
+            );
+
+            btn.innerHTML = '<span class="spinner"></span>Publicando...';
+            const putRes = await fetch(apiURL, {
+                method: 'PUT', headers,
+                body: JSON.stringify({
+                    message: 'Comunicados atualizados',
+                    content: btoa(unescape(encodeURIComponent(html))),
+                    sha, branch: GH_BRANCH
+                })
+            });
+
+            if (!putRes.ok) { const e = await putRes.json(); throw new Error(e.message); }
+            msg.textContent = '✔ Comunicados publicados! Site atualiza em ~1 minuto.';
+            msg.className = 'msg ok';
+            btn.innerHTML = '✔ Publicado!';
+        } catch(e) {
+            msg.textContent = `Erro: ${e.message}`;
+            msg.className = 'msg erro';
+            btn.disabled = false;
+            btn.innerHTML = '🚀 Publicar Comunicados';
+        }
+    }
+
 </script>
 </body>
 </html>
